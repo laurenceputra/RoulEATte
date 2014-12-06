@@ -1,7 +1,7 @@
 'use strict';
 
 
-var UserModel = require('../models/user');
+var UserModel = require('../../models/user');
 
 
 module.exports = function (router) {
@@ -9,40 +9,42 @@ module.exports = function (router) {
     var model = new UserModel();
 
 
-    router.get('/user/login', function (req, res) {
+    router.get('/login', function (req, res) {
         
         res.render('index', model);
         
     });
 
-    router.post('/user/login', function (req, res) {
+    router.post('/login', function (req, res) {
         
         res.render('index', model);
         
     });
 
-    router.get('/user/token', function (req, res) {
+    router.get('/token', function (req, res) {
         
         res.render('index', model);
         
     });
 
-    router.post('/user/token', function (req, res) {
+    router.post('/token', function (req, res) {
         
         res.render('index', model);
         
     });
 
-    router.get('/user/foursquare', function (req, res) {
+    router.get('/foursquare', function (req, res) {
         
         res.render('index', model);
         
     });
 
-    router.post('/user/foursquare', function (req, res) {
+    router.post('/foursquare', function (req, res) {
         
         res.render('index', model);
         
     });
+
+    return router;
 
 };
