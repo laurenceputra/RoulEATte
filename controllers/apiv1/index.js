@@ -9,8 +9,7 @@ module.exports = function (router) {
 
     var User = mongoose.model('user');
 
-    router.post('/token', 
-        passwordless.acceptToken({allowPost: true, successRedirect:'/user/foursquare'}), 
+    router.post('/',
         function (req, res) {
             res.render('user/login-token');
     });
