@@ -1,0 +1,14 @@
+{>"layouts/master" /}
+
+{<body}
+<div style="width:360px; margin-left:auto; margin-right:auto;">
+    <h3>Enter your email address to start</h3>
+    <form class="pure-form" action="/user/login" method="post">
+        <fieldset>
+            <input id="email" name="email" style="margin-right:10px" type="text" placeholder="Email address">
+            <input type="hidden" name="_csrf" value="{_csrf}">
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </fieldset>
+    </form>
+</div>
+{/body}

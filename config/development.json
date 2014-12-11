@@ -25,7 +25,9 @@
     },
 
     "middleware": {
-
+        "logger":{
+            "enabled": false
+        },
         "devtools": {
             "enabled": true,
             "priority": 35,

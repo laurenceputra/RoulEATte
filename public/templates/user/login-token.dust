@@ -1,0 +1,16 @@
+{>"layouts/master" /}
+
+{<body}
+<div style="width:360px; margin-left:auto; margin-right:auto;">
+    <h3>Email sent!</h3>
+    <p>Please click on the link sent in your email to complete your login, or enter the token below</p>
+    <form class="pure-form" action="/user/token" method="post">
+        <fieldset>
+            <input id="token" name="token" style="margin-right:10px" type="text" placeholder="Token">
+            <input type="hidden" name="uid" value="asdasda">
+            <input type="hidden" name="_csrf" value="{_csrf}">
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </fieldset>
+    </form>
+</div>
+{/body}

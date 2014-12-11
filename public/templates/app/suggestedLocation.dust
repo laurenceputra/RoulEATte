@@ -1,0 +1,10 @@
+<div class="pure-u-1">
+	<img src="{photo}" class="locationPhoto">
+</div>
+<div class="pure-u-1">
+	<h3>{name}</h3>
+	<h4>{venue.category}</h4>
+	{#venue.address}
+	<p>{line}</p>
+	{/venue.address}
+</div>

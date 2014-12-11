@@ -3,7 +3,7 @@
 var http = require('http');
 var express = require('express');
 var kraken = require('kraken-js');
-
+var fs = require('fs');
 
 var options, app, server;
 
@@ -28,7 +28,19 @@ app.on('start', function () {
     console.log('Environment: %s', app.kraken.get('env:env'));
 });
 
+require('./config/mongoose.js')();
+require('./config/session.js')(app);
+require('./config/passwordless.js')(app);
 
+app.use(function(req, res, next){
+    res.locals.session = req.session;
+    next();
+});
+
+// Bootstrap models
+fs.readdirSync(__dirname + '/models').forEach(function (file) {
+    if (~file.indexOf('.js')) require(__dirname + '/models/' + file);
+});
 
 /*
  * Create and start HTTP server.

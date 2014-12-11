@@ -1,0 +1,13 @@
+#app{
+	padding: 0px 20px;
+}
+
+.center{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.locationPhoto{
+	max-height: 300px;
+	max-width: 300px;
+}
