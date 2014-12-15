@@ -8,6 +8,8 @@ module.exports = function (router) {
 
     var User = mongoose.model('user');
     var Foursquare = mongoose.model('foursquare');
+    var Locations = mongoose.model('location');
+
     router.get('/', function (req, res) {
         function userFindCallback(err, user){
             if(err || !user){
@@ -79,30 +81,41 @@ module.exports = function (router) {
                                 if(location.photo){
                                     storedLocation.photo = location.photo.prefix + location.photo.width + 'x' + location.photo.height + location.photo.suffix;
                                 }
-                                storedLocation.id = location.venue.id;
+                                storedLocation._id = location.venue.id;
                                 storedLocation.name = location.venue.name;
-                                storedLocation.venue = {};
-                                storedLocation.venue.lat = location.venue.location.lat;
-                                storedLocation.venue.lng = location.venue.location.lng;
-                                storedLocation.venue.address = location.venue.location.formattedAddress;
-                                storedLocation.venue.category = location.venue.categories[0].name;
+                                storedLocation.coords = [];
+                                storedLocation.coords.push(location.venue.location.lng);
+                                storedLocation.coords.push(location.venue.location.lat);
+                                if(location.venue.location.formattedAddress){
+                                    storedLocation.address = location.venue.location.formattedAddress.join(' ');
+                                }
+                                storedLocation.category = location.venue.categories[0].name;
                                 storedLocations.push(storedLocation);
                             });
-                            var criteria = {
-                                id: userid
-                            };
 
                             var data = {};
                             data['lists.' + list.response.list.id] = {
                                 'name': list.response.list.name,
-                                'locations': storedLocations
+                                'list': storedLocations
                             };
-                            console.log(data);
-                            Foursquare.update(criteria, {$set:data},{upsert: true}, function(err, numAffected, raw){
+                            data._id = userid;
+                            data.expires = Date.now();
+
+                            Foursquare.update({_id: userid}, {$set: data}, {upsert: true}, function(err){
                                 if(err){
                                     console.log(err);
                                 }
-                                console.log(raw);
+                            })
+                                
+                            storedLocations.forEach(function(location){
+                                var id = location._id;
+                                delete location._id;
+                                location.expires = Date.now();
+                                Locations.update({_id: id}, {$set: location}, {upsert:true}, function(err){
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                })
                             });
                         }
                     });

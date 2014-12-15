@@ -3,11 +3,11 @@
 var mongoose = require('mongoose');
 
 var foursquareSchema = mongoose.Schema({
-    id: String,
+    _id:  String,
     lists: mongoose.Schema.Types.Mixed,
     expires: { 
         type: Date, 
-        index: { expires: '1d' },
+        expires: '1d',
         default: Date.now,
         require: true
     }
