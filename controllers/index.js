@@ -105,7 +105,7 @@ module.exports = function (router) {
                                 if(err){
                                     console.log(err);
                                 }
-                            })
+                            });
                                 
                             storedLocations.forEach(function(location){
                                 var id = location._id;
@@ -115,7 +115,7 @@ module.exports = function (router) {
                                     if(err){
                                         console.log(err);
                                     }
-                                })
+                                });
                             });
                         }
                     });
