@@ -3,8 +3,6 @@
 </div>
 <div class="pure-u-1">
 	<h3>{name}</h3>
-	<h4>{venue.category}</h4>
-	{#venue.address}
-	<p>{line}</p>
-	{/venue.address}
+	<h4>{category}</h4>
+	<p>{address}</p>
 </div>

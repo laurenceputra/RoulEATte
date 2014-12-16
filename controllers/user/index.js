@@ -3,7 +3,6 @@
 
 var mongoose = require('mongoose');
 var passwordless = require('passwordless');
-var request = require('request');
 var utils = require('../util.js');
 
 module.exports = function (router) {
@@ -49,11 +48,47 @@ module.exports = function (router) {
 
     router.get('/foursquare_redirect', function (req, res) {
         var foursquare = require('../../config/foursquare.js')();
-        request({
-            method: 'GET',
-            uri: 'https://foursquare.com/oauth2/access_token?client_id=' + foursquare.clientId + '&client_secret=' + foursquare.clientSecret + '&grant_type=authorization_code&redirect_uri=' + foursquare.redirect + '&code='+req.query.code
-        },
-        function(err, response, body){
+        function userDetailsCallback(err, response, body, token){
+            if(err){
+                res.redirect('/user/foursquare');
+                console.log(err);
+                return;
+            }
+            var foursquareUser = JSON.parse(body);
+            if(foursquareUser.meta.code !== 200){
+                console.log('Error, return code not 200. ' + foursquareUser.toString());
+            }
+            foursquareUser = foursquareUser.response;
+            var options = {_id: foursquareUser.user.id};
+            User.findOne(options, function(err, user){
+                if(err){
+                    res.redirect('/user/foursquare');
+                    console.log(err);
+                    return;
+                }
+                if(!user){
+                    user = new User();
+
+                    user._id = foursquareUser.user.id;
+                    user.name = foursquareUser.user.name;
+                    user.photo = foursquareUser.user.photo.prefix + '200x200' + foursquareUser.user.photo.suffix;
+                    user.email = foursquareUser.user.contact.email;
+                    user.foursquare_token = token;
+                    user.save(function(err, user){
+                        if(err){
+                            console.log(err);
+                            res.redirect('/user/foursquare');
+                            return;
+                        }
+                    });
+                }
+                req.session.user_id = user._id;
+                req.session.foursquare_token = user.foursquare_token;
+                res.redirect('/');
+            });
+        }
+
+        function accessTokenCallback(err, response, body){
             if(err){
                 res.redirect('/user/foursquare');
                 console.log(err);
@@ -65,54 +100,16 @@ module.exports = function (router) {
                     throw 'Error, access token not found. ' + token.toString();
                 }
                 
-                request({
-                    method: 'GET',
-                    uri: 'https://api.foursquare.com/v2/users/self?oauth_token=' + token.access_token + '&v=' + utils.getFoursquareVersion()
-                },
-                function(err, response, body){
-                    if(err){
-                        res.redirect('/user/foursquare');
-                        console.log(err);
-                        return;
-                    }
-                    var foursquareUser = JSON.parse(body);
-                    if(foursquareUser.meta.code !== 200){
-                        throw 'Error, return code not 200. ' + foursquareUser.toString();
-                    }
-                    foursquareUser = foursquareUser.response;
-                    var options = {id: foursquareUser.user.id};
-                    User.findOne(options, function(err, user){
-                        if(err){
-                            res.redirect('/user/foursquare');
-                            console.log(err);
-                            return;
-                        }
-                        if(!user){
-                            user = new User();
-
-                            user.id = foursquareUser.user.id;
-                            user.name = foursquareUser.user.name;
-                            user.photo = foursquareUser.user.photo.prefix + '200x200' + foursquareUser.user.photo.suffix;
-                            user.email = foursquareUser.user.contact.email;
-                            user.foursquare_token = token.access_token;
-                            user.save(function(err, user){
-                                req.session.user_id = user._id.toString();
-                                res.redirect('/');
-                            });
-                        }
-                        else{
-                            req.session.user_id = user._id.toString();
-                            res.redirect('/');      
-                        }
-                    });
-                });
+                foursquare.getUserDetails(token.access_token, userDetailsCallback);
             }
             catch(err){
                 console.log(err);
                 res.redirect('/user/foursquare');
                 return;
             }
-        });
+        }
+
+        foursquare.getAccessToken(req.query.code, accessTokenCallback);
     });
 
     router.get('/logout', utils.requireLogIn, function (req, res) {

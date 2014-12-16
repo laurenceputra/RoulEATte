@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 
 var locationSchema = mongoose.Schema({
-	_id:  String,
+    _id:  String,
     photo: String,
     name: String,
     coords:[Number, Number], //lng, lat
@@ -13,13 +13,13 @@ var locationSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
         require: true,
-        expires: '28d',
+        expires: '7d',
     }
 });
 
 locationSchema.index({
-	coords: '2d',
-	lists: 1
+    coords: '2d',
+    lists: 1
 });
 
 var location = mongoose.model('location', locationSchema);

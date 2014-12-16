@@ -10,6 +10,8 @@ module.exports = function (router) {
     var Foursquare = mongoose.model('foursquare');
     var Locations = mongoose.model('location');
 
+    var foursquareConfig = require('../config/foursquare.js')();
+
     router.get('/', function (req, res) {
         function userFindCallback(err, user){
             if(err || !user){
@@ -18,7 +20,7 @@ module.exports = function (router) {
                 return;
             }
             Foursquare.findOne({
-                id: user.id
+                _id: user._id
             }, function(err, foursquare){
                 if(err){
                     res.redirect('/');
@@ -26,14 +28,14 @@ module.exports = function (router) {
                     return;
                 }
                 if(!foursquare){
-                    getFoursquareLists(user.id, user.foursquare_token);
+                    getFoursquareLists(user._id, user.foursquare_token);
                 }
                 res.render('app/app');
             });
         }
         if(utils.isLoggedIn(req)){
             User.findOne({
-                _id:mongoose.Types.ObjectId(utils.isLoggedIn(req))
+                _id: utils.isLoggedIn(req)
             }, userFindCallback);
         }
         else{
@@ -60,6 +62,7 @@ module.exports = function (router) {
                 }
                 lists = lists.response.lists.groups[0].items;
                 lists.forEach(function(list){
+                    console.log('https://api.foursquare.com/v2/lists/' + list.id + '?oauth_token=' + token + '&v=' + utils.getFoursquareVersion());
                     request({
                         method: 'GET',
                         uri: 'https://api.foursquare.com/v2/lists/' + list.id + '?oauth_token=' + token + '&v=' + utils.getFoursquareVersion()
@@ -77,20 +80,7 @@ module.exports = function (router) {
                             var locations = list.response.list.listItems.items;
                             var storedLocations = [];
                             locations.forEach(function(location){
-                                var storedLocation = {};
-                                if(location.photo){
-                                    storedLocation.photo = location.photo.prefix + location.photo.width + 'x' + location.photo.height + location.photo.suffix;
-                                }
-                                storedLocation._id = location.venue.id;
-                                storedLocation.name = location.venue.name;
-                                storedLocation.coords = [];
-                                storedLocation.coords.push(location.venue.location.lng);
-                                storedLocation.coords.push(location.venue.location.lat);
-                                if(location.venue.location.formattedAddress){
-                                    storedLocation.address = location.venue.location.formattedAddress.join(' ');
-                                }
-                                storedLocation.category = location.venue.categories[0].name;
-                                storedLocations.push(storedLocation);
+                                storedLocations.push(foursquareConfig.morphLocation(location));
                             });
 
                             var data = {};

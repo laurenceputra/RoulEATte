@@ -1,7 +1,1 @@
-'use strict';
-if(loggedIn){
-
-}
-else{
-	
-}
+"use strict";loggedIn;

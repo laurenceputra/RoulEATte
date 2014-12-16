@@ -7,7 +7,7 @@ var foursquareSchema = mongoose.Schema({
     lists: mongoose.Schema.Types.Mixed,
     expires: { 
         type: Date, 
-        expires: '1d',
+        expires: '6h',
         default: Date.now,
         require: true
     }
