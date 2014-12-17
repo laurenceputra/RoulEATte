@@ -65,7 +65,17 @@ module.exports = function (router) {
                         failure(res, 'Data not found', '/');
                         return;
                     }
-                    success(res, foursquare.lists[decodeURIComponent(req.params.id)].list);
+                    if(foursquare.lists[decodeURIComponent(req.params.id)]){
+                        var data = {
+                            id: decodeURIComponent(req.params.id),
+                            list: foursquare.lists[decodeURIComponent(req.params.id)].list
+                        };
+                        success(res, data);
+                    }
+                    else{
+                        failure(res, 'Data not found', '/');
+                    }
+                    
                 });
             }
             else{
@@ -96,7 +106,7 @@ module.exports = function (router) {
                 newLocation._id = id;
                 locationList.push(newLocation);
             });
-            res.json(locationList);
+            success(res, locationList);
         }
         catch(err){
             console.log(err);
@@ -107,7 +117,6 @@ module.exports = function (router) {
 
     router.get('/location/near/:lng/:lat/distance/:radius',
         function (req, res) {
-            console.log('start');
             var args = {};
             args.lng = parseFloat(req.params.lng);
             args.lat = parseFloat(req.params.lat);
@@ -120,7 +129,6 @@ module.exports = function (router) {
                 if(err){
                     console.log(err);
                 }
-                console.log(locations);
                 if(err || locations.length < 15){
                     args.backup = locations;
                     foursquareConfig.getLocations(args, getLocationCallback);
@@ -130,35 +138,7 @@ module.exports = function (router) {
                     locations.forEach(function(location){
                         returnLocations.push(location.obj);
                     });
-                    res.json(returnLocations);
-                }
-            });
-    });
-
-    router.get('/location/near/:lng/:lat',
-        function (req, res) {
-            var args = {};
-            args.lng = parseFloat(req.params.lng);
-            args.lat = parseFloat(req.params.lat);
-            args.meter = 500;
-            args.distance = utils.convertMeterToDegree(500);
-            args.res = res;
-            args.id = utils.isLoggedIn(req);
-            args.foursquare_token = utils.getCurrentToken(req);
-            Locations.geoNear([args.lng, args.lat], {maxDistance: args.distance, num: 50}, function(err, locations){
-                if(err){
-                    console.log(err);
-                }
-                if(err || locations.length < 15){
-                    args.backup = locations;
-                    foursquareConfig.getLocations(args, getLocationCallback);
-                }
-                else{
-                    var returnLocations = [];
-                    locations.forEach(function(location){
-                        returnLocations.push(location.obj);
-                    });
-                    res.json(returnLocations);
+                    success(res, returnLocations);
                 }
             });
     });

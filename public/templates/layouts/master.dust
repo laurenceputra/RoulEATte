@@ -25,6 +25,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
 <![endif]-->
     <link rel="stylesheet" href="/css/custom.css">
+
+    <script type="text/javascript" src="/js/dust.min.js"></script>
+    <script type="text/javascript" src="/js/en_US_templates.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
 </head>
 <body>
 
@@ -49,7 +53,6 @@
 <div style="width:100%;padding-top:90px">
 	{+body /}
 </div>
-
 
 </body>
 </html>

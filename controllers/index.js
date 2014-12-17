@@ -62,7 +62,6 @@ module.exports = function (router) {
                 }
                 lists = lists.response.lists.groups[0].items;
                 lists.forEach(function(list){
-                    console.log('https://api.foursquare.com/v2/lists/' + list.id + '?oauth_token=' + token + '&v=' + utils.getFoursquareVersion());
                     request({
                         method: 'GET',
                         uri: 'https://api.foursquare.com/v2/lists/' + list.id + '?oauth_token=' + token + '&v=' + utils.getFoursquareVersion()
