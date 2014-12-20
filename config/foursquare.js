@@ -6,7 +6,8 @@ module.exports = function(){
     foursquare['clientId'] = process.env.FOURSQUARE_CLIENT_ID;
     foursquare['clientSecret'] = process.env.FOURSQUARE_CLIENT_SECRET;
     foursquare['redirect'] = encodeURIComponent(process.env.FOURSQUARE_REDIRECT);
-    
+
+
     foursquare.getAccessToken = function(code, callback){
         request({
             method: 'GET',
@@ -24,7 +25,7 @@ module.exports = function(){
     foursquare.getLocations = function(args, callback){
         request({
             method: 'GET',
-            uri: 'https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion()
+            uri: 'https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId +'&client_secret=' + foursquare.clientSecret) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion()
         }, function(err, response, body){
             callback(args.res, args.backup, err, response, body);
         });
