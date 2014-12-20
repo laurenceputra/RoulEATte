@@ -1,0 +1,10 @@
+{?loggedIn}
+<div style="width:310px; margin:auto">
+	<button class="button pure-button" onclick="selectRandomLocationFromResults();">Random</button>
+	<button class="button pure-button" onclick="selectRandomLocationFromList();">Random from List</button>
+</div>
+{:else}
+<div style="width:120px; margin:auto">
+	<button class="button pure-button" onclick="selectRandomLocationFromResults();">Random</button>
+</div>
+{/loggedIn}

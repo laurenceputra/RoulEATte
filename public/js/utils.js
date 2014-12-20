@@ -6,6 +6,7 @@ function ajax(url, type, data, callback){
 				callback(JSON.parse(req.responseText));
 			}
 			catch(e){
+				callback(req.responseText);
 				console.log(e);
 			}
 		}

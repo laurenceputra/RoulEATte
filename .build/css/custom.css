@@ -1,1 +1,1 @@
-#app{padding:0 20px}.center{margin-left:auto;margin-right:auto}.locationPhoto{max-height:300px;max-width:300px}
+#app{padding:0 20px}#loadingContainer,.center{margin-left:auto;margin-right:auto}.locationPhoto{background-size:cover;background-color:#d3d3d3;height:300px;width:300px;margin:auto;display:block}.locationDetails{text-align:center}.button{margin:0 10px}#buttonsContainer,#listSelectContainer,#loadingContainer,#suggestedLocationContainer{padding:10px 0}.hide{display:none}.show{display:block}

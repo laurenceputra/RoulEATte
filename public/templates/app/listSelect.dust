@@ -1,0 +1,5 @@
+<select id="listSelect" style="width:100%">
+	{#data}
+	<option value="{id}">{name}</option>
+	{/data}
+</select>

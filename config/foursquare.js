@@ -22,7 +22,6 @@ module.exports = function(){
     };
 
     foursquare.getLocations = function(args, callback){
-        console.log('https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion());
         request({
             method: 'GET',
             uri: 'https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion()
@@ -35,6 +34,12 @@ module.exports = function(){
         var storedLocation = {};
         if(location.photo){
             storedLocation.photo = location.photo.prefix + location.photo.width + 'x' + location.photo.height + location.photo.suffix;
+        }
+        else if(location.tips && location.tips[0] && location.tips[0].photo){
+             storedLocation.photo = location.tips[0].photo.prefix + location.tips[0].photo.width + 'x' + location.tips[0].photo.height + location.tips[0].photo.suffix;
+        }
+        else if(location.venue.categories[0] && location.venue.categories[0].icon){
+            storedLocation.photo = location.venue.categories[0].icon.prefix + '100' + location.venue.categories[0].icon.suffix;
         }
         storedLocation._id = location.venue.id;
         storedLocation.name = location.venue.name;

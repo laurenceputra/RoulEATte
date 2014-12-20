@@ -7,11 +7,14 @@ module.exports = function uglify(grunt) {
 
     // Options
     return {
+        options:{
+            report: 'min',
+        },
         mainJS:{
             files: [{
                 expand:true,
                 cwd: 'public/js/',
-                src: ['*.js'],
+                src: ['*.js', '!*_templates.js'],
                 dest: '.build/js/',
             }]
         },

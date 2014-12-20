@@ -7,7 +7,36 @@
 	margin-right: auto;
 }
 
+#loadingContainer{
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .locationPhoto{
-	max-height: 300px;
-	max-width: 300px;
+	background-size: cover;
+	background-color: #d3d3d3;
+	height: 300px;
+	width: 300px;
+	margin: auto;
+	display:block;
+}
+
+.locationDetails{
+	text-align: center;
+}
+
+.button{
+	margin: 0 10px;
+}
+
+#listSelectContainer, #loadingContainer, #suggestedLocationContainer, #buttonsContainer{
+	padding: 10px 0px;
+}
+
+.hide{
+	display: none;
+}
+
+.show{
+	display: block;
 }
