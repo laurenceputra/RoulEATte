@@ -50,7 +50,7 @@
     </div>
 </div>
 
-<div style="width:100%;padding-top:90px">
+<div style="height:100%;width:100%;padding-top:36px">
 	{+body /}
 </div>
 

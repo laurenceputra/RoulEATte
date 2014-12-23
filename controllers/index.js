@@ -11,8 +11,12 @@ module.exports = function (router) {
     var Locations = mongoose.model('location');
 
     var foursquareConfig = require('../config/foursquare.js')();
+    var gmapsConfig = require('../config/gmaps.js')();
 
     router.get('/', function (req, res) {
+        var data = {
+            mapsAPIKey: gmapsConfig.apiKey
+        };
         function userFindCallback(err, user){
             if(err || !user){
                 res.redirect('/user/logout');
@@ -30,7 +34,6 @@ module.exports = function (router) {
                 if(!foursquare){
                     getFoursquareLists(user._id, user.foursquare_token);
                 }
-                res.render('app/app');
             });
         }
         if(utils.isLoggedIn(req)){
@@ -38,9 +41,7 @@ module.exports = function (router) {
                 _id: utils.isLoggedIn(req)
             }, userFindCallback);
         }
-        else{
-            res.render('app/app');
-        }
+        res.render('app/app', data);
         
         
     });

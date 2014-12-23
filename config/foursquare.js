@@ -7,7 +7,6 @@ module.exports = function(){
     foursquare['clientSecret'] = process.env.FOURSQUARE_CLIENT_SECRET;
     foursquare['redirect'] = encodeURIComponent(process.env.FOURSQUARE_REDIRECT);
 
-
     foursquare.getAccessToken = function(code, callback){
         request({
             method: 'GET',
@@ -25,7 +24,7 @@ module.exports = function(){
     foursquare.getLocations = function(args, callback){
         request({
             method: 'GET',
-            uri: 'https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId +'&client_secret=' + foursquare.clientSecret) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion()
+            uri: 'https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId +'&client_secret=' + foursquare.clientSecret) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion() + '&venuePhotos=1'
         }, function(err, response, body){
             callback(args.res, args.backup, err, response, body);
         });
@@ -38,6 +37,9 @@ module.exports = function(){
         }
         else if(location.tips && location.tips[0] && location.tips[0].photo){
              storedLocation.photo = location.tips[0].photo.prefix + location.tips[0].photo.width + 'x' + location.tips[0].photo.height + location.tips[0].photo.suffix;
+        }
+        else if(location.venue.featuredPhotos && location.venue.featuredPhotos.items && location.venue.featuredPhotos.items[0]){
+            storedLocation.photo = location.venue.featuredPhotos.items[0].prefix + location.venue.featuredPhotos.items[0].width + 'x' + location.venue.featuredPhotos.items[0].height + location.venue.featuredPhotos.items[0].suffix
         }
         else if(location.venue.categories[0] && location.venue.categories[0].icon){
             storedLocation.photo = location.venue.categories[0].icon.prefix + '100' + location.venue.categories[0].icon.suffix;
