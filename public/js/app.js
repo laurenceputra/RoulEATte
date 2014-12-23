@@ -1,25 +1,66 @@
 'use strict';
+
 var lng = 103.844;
 var lat = 1.2921;
 var distance = 500;
+
+//variables to determine if list results should be loaded
+var initialLoad = true;
+
 var previousIndex = {};
 previousIndex['search'] = -1;
 previousIndex['list'] = -1;
+
+//cache for data
 var cache = {};
 cache.loggedIn = loggedIn;
+
+//map related variables
 var map = null;
 var curLocation = null;
-var curLocationInfoWindow = new google.maps.InfoWindow({
-      content: "You are here!"
-  });
 var curLocationListener = null;
+var curLocationInfoWindow = null;
+function initialize() {
+    var mapOptions = {
+        center: { lat: lat, lng: lng},
+        zoom: 16,
 
+    };
+    map = new google.maps.Map(document.getElementById('map'),
+        mapOptions);
+    //current location marker + events
+    curLocation = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+        map: map,
+        draggable:true,
+        animation: google.maps.Animation.DROP,
+        zIndex: 100
+    });
+    google.maps.event.addListener(curLocation, 'dragend', function(){
+        lat = curLocation.getPosition().lat();
+        lng = curLocation.getPosition().lng();
+        map.setCenter(curLocation.position);
+        getSearchResults();
+    });
+    curLocationInfoWindow = new google.maps.InfoWindow({
+          content: "You are here!"
+      });
+    curLocationListener = google.maps.event.addListener(curLocation, 'click', function() {
+        curLocationInfoWindow.open(map,curLocation);
+    });;
+
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    
+//stores the locations
 var randomLocation = [];
 var randomLocationInfoWindow = new google.maps.InfoWindow({
     content: 'No content',
     maxWidth: 200
 });
 var randomLocationListener = [];
+//stores what is currently being displayed
 var display = null;
 function startLocationServices(){
     if(navigator.geolocation){
@@ -29,51 +70,19 @@ function startLocationServices(){
             if(map){
                 var center = new google.maps.LatLng(lat, lng);
                 map.setCenter(center);
-                if(!curLocation){
-                    curLocation = new google.maps.Marker({
-                        position: center,
-                        map: map,
-                        draggable:true,
-                        animation: google.maps.Animation.DROP,
-                        zIndex: 100
-                    });
-                    curLocationListener = google.maps.event.addListener(curLocation, 'click', function() {
-                        curLocationInfoWindow.open(map,curLocation);
-                    });
-                    google.maps.event.addListener(curLocation, 'dragend', function(){
-                        lat = curLocation.getPosition().lat();
-                        lng = curLocation.getPosition().lng();
-                        map.setCenter(curLocation.position);
-                        getSearchResults();
-                    });
-                }
-                else{
-                    curLocation.setPosition(center);
-                }
+                curLocation.setPosition(center);
                 getSearchResults();
             }
             else{
                 setTimeout(startLocationServices, 2000)
             }
         }, function(err){
-            alert(err);
+            alert(err.message);
         }, {enableHighAccuracy:true});
     }
 }
 
 startLocationServices();
-
-function initialize() {
-    var mapOptions = {
-        center: { lat: lat, lng: lng},
-        zoom: 16,
-
-    };
-    map = new google.maps.Map(document.getElementById('map'),
-        mapOptions);
-}
-google.maps.event.addDomListener(window, 'load', initialize);
-
 
 function refreshListsURL(){
     return '/';
@@ -151,11 +160,14 @@ function populateListDetails(locations){
         cache.listLocations[locations.data.id].data = locations.data.list;
         cache.listLocations[locations.data.id].lastUpdated = Date.now();
     }
-    clearMapMarkers();
-    display = id;
-    cache.listLocations[id].data.forEach(function(location){
-        renderLocation(location);
-    });
+    if(!initialLoad){
+        clearMapMarkers();
+        display = id;
+        cache.listLocations[id].data.forEach(function(location){
+            renderLocation(location);
+        });
+        selectRandomLocationFromList();
+    }
 }
 
 function selectRandomLocationFromList(){
@@ -168,7 +180,7 @@ function selectRandomLocationFromList(){
     else{
         if(display != id){
             clearMapMarkers();
-            display = 'search';
+            display = id;
             cache.listLocations[id].data.forEach(function(location){
                 renderLocation(location);
             });
@@ -194,11 +206,13 @@ function receiveSearchResults(results){
     cache.search = {};
     cache.search.data = results.data;
     cache.search.lastUpdated = Date.now();
+    initialLoad = false;
     clearMapMarkers();
     display = 'search';
     cache.search.data.forEach(function(location){
         renderLocation(location);
     });
+    selectRandomLocationFromResults();
 }
 
 function selectRandomLocationFromResults(){
@@ -242,7 +256,6 @@ function clearMapMarkers(){
     }
 }
 function renderLocation(location){
-    console.log(location);
     dust.render('app/suggestedLocation', location, function(err, out){
         var coords = new google.maps.LatLng(location.coords[1], location.coords[0]);
         randomLocation.push(new google.maps.Marker({

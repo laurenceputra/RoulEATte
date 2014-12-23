@@ -49,7 +49,7 @@ module.exports = function (router) {
     function getFoursquareLists(userid, token){
         request({
             method: 'GET',
-            uri: 'https://api.foursquare.com/v2/users/self/lists?oauth_token=' + token + '&v=' + utils.getFoursquareVersion()
+            uri: 'https://api.foursquare.com/v2/users/self/lists?oauth_token=' + token + '&v=' + utils.getFoursquareVersion() + '&limit=200&group=created'
         }, function(err, response, body){
             if(err){
                 console.log(err);
