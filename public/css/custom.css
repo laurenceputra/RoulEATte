@@ -35,6 +35,10 @@ img[src*="4sq"]{
 	text-align: center;
 }
 
+.locationDetails h3, .locationDetails h4, .locationDetails p{
+	margin: 0px;
+}
+
 .button{
 	margin: 0 10px;
 }
