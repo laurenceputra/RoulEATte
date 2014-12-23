@@ -251,8 +251,8 @@ function renderLocation(location){
             icon: {
                 url: location.photo,
                 scaledSize: {
-                    width: 48,
-                    height: 48
+                    width: 32,
+                    height: 32
                 }
             }
         }));
