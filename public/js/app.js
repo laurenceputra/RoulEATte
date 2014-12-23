@@ -16,7 +16,8 @@ var curLocationListener = null;
 
 var randomLocation = [];
 var randomLocationInfoWindow = new google.maps.InfoWindow({
-    content: 'No content'
+    content: 'No content',
+    maxWidth: 200
 });
 var randomLocationListener = [];
 var display = null;
@@ -241,6 +242,7 @@ function clearMapMarkers(){
     }
 }
 function renderLocation(location){
+    console.log(location);
     dust.render('app/suggestedLocation', location, function(err, out){
         var coords = new google.maps.LatLng(location.coords[1], location.coords[0]);
         randomLocation.push(new google.maps.Marker({
@@ -249,7 +251,7 @@ function renderLocation(location){
             map: map,
             zIndex: 0,
             icon: {
-                url: location.photo,
+                url: location.photo.prefix + "32x32" + location.photo.suffix,
                 scaledSize: {
                     width: 32,
                     height: 32

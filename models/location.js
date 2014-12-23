@@ -4,7 +4,10 @@ var mongoose = require('mongoose');
 
 var locationSchema = mongoose.Schema({
     _id:  String,
-    photo: String,
+    photo: {
+        prefix: String,
+        suffix: String
+    },
     name: String,
     coords:[Number, Number], //lng, lat
     address: String,
