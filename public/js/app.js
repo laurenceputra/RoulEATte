@@ -78,6 +78,7 @@ function startLocationServices(){
             }
         }, function(err){
             alert(err.message);
+            getSearchResults();
         }, {enableHighAccuracy:true});
     }
 }
