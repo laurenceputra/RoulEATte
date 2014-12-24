@@ -47,6 +47,7 @@ module.exports = function (router) {
     });
 
     function getFoursquareLists(userid, token){
+        console.log( 'https://api.foursquare.com/v2/users/self/lists?oauth_token=' + token + '&v=' + utils.getFoursquareVersion() + '&limit=200&group=created');
         request({
             method: 'GET',
             uri: 'https://api.foursquare.com/v2/users/self/lists?oauth_token=' + token + '&v=' + utils.getFoursquareVersion() + '&limit=200&group=created'
@@ -61,7 +62,7 @@ module.exports = function (router) {
                     console.log(lists);
                     throw 'Error, return code not 200.';
                 }
-                lists = lists.response.lists.groups[0].items;
+                lists = lists.response.lists.items;
                 lists.forEach(function(list){
                     request({
                         method: 'GET',
