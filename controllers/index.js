@@ -32,7 +32,8 @@ module.exports = function (router) {
                     return;
                 }
                 if(!foursquare){
-                    getFoursquareLists(user._id, user.foursquare_token);
+                    getFoursquareLists(user._id, user.foursquare_token, 'created');
+                    getFoursquareLists(user._id, user.foursquare_token, 'followed');
                 }
             });
         }
@@ -46,11 +47,13 @@ module.exports = function (router) {
         
     });
 
-    function getFoursquareLists(userid, token){
-        console.log( 'https://api.foursquare.com/v2/users/self/lists?oauth_token=' + token + '&v=' + utils.getFoursquareVersion() + '&limit=200&group=created');
+    function getFoursquareLists(userid, token, type){
+        if(!type){
+            type = 'created';
+        }
         request({
             method: 'GET',
-            uri: 'https://api.foursquare.com/v2/users/self/lists?oauth_token=' + token + '&v=' + utils.getFoursquareVersion() + '&limit=200&group=created'
+            uri: 'https://api.foursquare.com/v2/users/self/lists?oauth_token=' + token + '&v=' + utils.getFoursquareVersion() + '&limit=200&group=' + type
         }, function(err, response, body){
             if(err){
                 console.log(err);
