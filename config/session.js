@@ -10,8 +10,7 @@ module.exports = function(app){
             auto_reconnect: true,
         }),
         cookie: {
-            expires: (new Date(Date.now() + (60000 * 24 * 30))),
-            maxAge: (60000 * 24 * 30)
+            maxAge: (365 * 24 * 60 * 60 * 1000)
         },
         resave: true,
         saveUninitialized: true

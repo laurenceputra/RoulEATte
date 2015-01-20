@@ -14,13 +14,18 @@ module.exports = function uglify(grunt) {
             files: [{
                 expand:true,
                 cwd: 'public/js/',
-                src: ['*.js', '!*_templates.js'],
+                src: ['*.js', '!*_templates.js', '!*.min.js', '!*external.js'],
                 dest: '.build/js/',
             }]
         },
         dustJS:{
             files: {
                 '.build/js/en_US_templates.js': ['.build/templates/US/en/**/*.js']
+            }
+        },
+        externalJS: {
+            files: {
+                '.build/js/external.js': ['public/js/*.min.js']
             }
         }
     };

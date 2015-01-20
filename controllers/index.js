@@ -47,6 +47,13 @@ module.exports = function (router) {
         
     });
 
+    router.get('/about', function (req, res) {
+        res.render('app/about');
+    });
+    router.get('/privacy', function (req, res) {
+        res.render('app/privacy');
+    });
+
     function getFoursquareLists(userid, token, type){
         if(!type){
             type = 'created';

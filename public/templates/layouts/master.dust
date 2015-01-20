@@ -26,7 +26,7 @@
 <![endif]-->
     <link rel="stylesheet" href="/css/custom.css">
 
-    <script type="text/javascript" src="/js/dust.min.js"></script>
+    <script type="text/javascript" src="/js/external.js"></script>
     <script type="text/javascript" src="/js/en_US_templates.js"></script>
     <script type="text/javascript" src="/js/utils.js"></script>
 </head>
@@ -36,21 +36,35 @@
 
 <div class="header">
     <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" href="">RoulEATte</a>
-
-        <ul>
-            <li><a href="/">Home</a></li>
+        <a class="pure-menu-heading" href="/">RoulEATte</a>
+        <ul id="nav-bar">
+            <li><a href="/about">About</a></li>
+            <li><a href="/privacy">Privacy</a></li>
             {?session.user_id}
             <li><a href="/user/logout">Logout</a></li>
             {:else}
             <li><a href="/user/foursquare">Login/Signup</a></li>
             {/session.user_id}
-            
+        </ul>
+        <ul id='nav-bar-mobile'>
+            <li>
+                <select>
+                    <option>Menu</option>
+                    <option onclick="window.location.href='/about'">About</option>
+                    <option onclick="window.location.href='/privacy'">Privacy</option>
+                    {?session.user_id}
+                    <option onclick="window.location.href='/user/logout'">Logout</option>
+                    {:else}
+                    <option onclick="window.location.href='/user/foursquare'">Login/Signup</option>
+                    {/session.user_id}
+                </select>
+
+            </li>
         </ul>
     </div>
 </div>
 
-<div style="height:100%;width:100%;padding-top:36px">
+<div id="main-body">
 	{+body /}
 </div>
 
