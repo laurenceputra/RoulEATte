@@ -18,6 +18,12 @@
 	</div>
 	<div class="pure-u-1 pure-u-md-1-3"></div>
 </div>
+<div id="settings-icon">
+	<a href="#" onclick="document.getElementById('settings').className='show';"><img src="/img/settings.png"></a>
+</div>
+<div id="settings" class="hide">
+	<div id="settings-close"><a href="#" onclick="document.getElementById('settings').className='hide';">x</a></div>
+</div>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={mapsAPIKey}"></script>
 <script type="text/javascript" src="/js/app.js"></script>
 {/body}

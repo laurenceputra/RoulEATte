@@ -16,6 +16,32 @@
 	height: 24px;
 	margin: 5px;
 }
+#settings-icon{
+	bottom: 16px;
+	right: 16px;
+	z-index: 1;
+	height: 32px;
+	width: 32px;
+	position: absolute;
+}
+#settings{
+	bottom: 32px;
+	right: 32px;
+	height: calc(100% - 80px);
+	width: calc(100% - 64px);
+	background-color: white;
+	z-index: 2;
+	position: absolute;
+}
+#settings-close{
+	top: 8px;
+	right: 8px;
+	z-index: 3;
+	position: absolute;
+}
+#settings-close a{
+	text-decoration: none;
+}
 /* css for all foursquare images */
 img[src*="4sq"]{
 	background-color: #d3d3d3;
