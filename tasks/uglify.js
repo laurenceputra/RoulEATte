@@ -25,7 +25,7 @@ module.exports = function uglify(grunt) {
         },
         externalJS: {
             files: {
-                '.build/js/external.js': ['public/js/*.min.js']
+                '.build/js/external.js': ['node_modules/dustjs-linkedin/dist/dust-core.min.js', 'node_modules/dustjs-helpers/dist/dust-helpers.min.js']
             }
         }
     };
