@@ -13,8 +13,8 @@
 	position: absolute;
 }
 #nav-select{
-	height: 34px;
-	padding: 5px 0px;
+	height: 24px;
+	margin: 5px;
 }
 /* css for all foursquare images */
 img[src*="4sq"]{
