@@ -1,11 +1,7 @@
-html, body{
-	height: 100%
-}
 #main-body{
-	height: calc(100% - 36px);
 	width: 100%;
 	padding-top: 36px;
-	z-index: -100;
+	z-index: 1;
 }
 #app{
 	padding: 0px 20px;
