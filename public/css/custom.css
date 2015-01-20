@@ -12,6 +12,10 @@
 	z-index: -1;
 	position: absolute;
 }
+#nav-select{
+	height: 34px;
+	padding: 5px 0px;
+}
 /* css for all foursquare images */
 img[src*="4sq"]{
 	background-color: #d3d3d3;
