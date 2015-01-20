@@ -60,13 +60,16 @@ img[src*="4sq"]{
 	display: block;
 }
 
-#nav-bar{
-	float:right;
-	display: inline-block;
+@media (min-width: 501px){
+	#nav-bar{
+		float:right;
+		display: inline-block;
+	}
+	#nav-bar-mobile{
+		display: none;
+	}
 }
-#nav-bar-mobile{
-	display: none;
-}
+
 @media (max-width: 500px){
 	#nav-bar{
 		display: none;
