@@ -5,9 +5,16 @@ html, body{
 	height: calc(100% - 36px);
 	width: 100%;
 	padding-top: 36px;
+	z-index: -100;
 }
 #app{
 	padding: 0px 20px;
+}
+#map{
+	height: calc(100% - 36px);
+	width: 100%;
+	z-index: -1;
+	position: absolute;
 }
 /* css for all foursquare images */
 img[src*="4sq"]{
@@ -18,14 +25,6 @@ img[src*="4sq"]{
 .center{
 	margin-left: auto;
 	margin-right: auto;
-}
-
-
-#map{
-	height: calc(100% - 36px);
-	width: 100%;
-	z-index: -1;
-	position: absolute;
 }
 .locationPhoto{
 	background-size: cover;
