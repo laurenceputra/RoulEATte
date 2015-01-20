@@ -1,1 +1,287 @@
-"use strict";function initialize(){var a={center:{lat:lat,lng:lng},zoom:16};map=new google.maps.Map(document.getElementById("map"),a),curLocation=new google.maps.Marker({position:new google.maps.LatLng(lat,lng),map:map,draggable:!0,animation:google.maps.Animation.DROP,zIndex:100}),google.maps.event.addListener(curLocation,"dragend",function(){lat=curLocation.getPosition().lat(),lng=curLocation.getPosition().lng(),map.setCenter(curLocation.position),getSearchResults()}),curLocationInfoWindow=new google.maps.InfoWindow({content:"You are here!"}),curLocationListener=google.maps.event.addListener(curLocation,"click",function(){curLocationInfoWindow.open(map,curLocation)})}function startLocationServices(){navigator.geolocation&&navigator.geolocation.getCurrentPosition(function(a){if(lng=a.coords.longitude,lat=a.coords.latitude,map){var b=new google.maps.LatLng(lat,lng);map.setCenter(b),curLocation.setPosition(b),getSearchResults()}else setTimeout(startLocationServices,2e3)},function(a){alert(a.message),getSearchResults()},{enableHighAccuracy:!0})}function refreshListsURL(){return"/"}function locationSearchURL(a){return a||(a=500),"/v1/location/near/"+lng+"/"+lat+"/distance/"+a}function getListsURL(){return"/v1/user/list/all"}function getListURL(a){return"/v1/user/list/"+encodeURIComponent(a)}function refreshLists(a){ajax(refreshListsURL(),"GET",null,a)}function getLists(){!cache.lists||(cache.lists.lastUpdated-Date.now())/1e3>600?ajax(getListsURL(),"GET",null,populateListOptions):populateListOptions(null)}function populateListOptions(a){return"failed"==a.status?void refreshLists(getLists):(a&&(cache.lists={},cache.lists.data=a.data,cache.lists.lastUpdated=Date.now()),dust.render("app/listSelect",cache.lists,function(a,b){document.getElementById("listSelectContainer").innerHTML=b,document.getElementById("listSelectContainer").className="show",document.getElementById("listSelect").addEventListener("change",getList)}),void getList())}function getList(){var a=document.getElementById("listSelect").value;!cache.listLocations||!cache.listLocations[a]||(cache.listLocations[a].lastUpdated-Date.now())/1e3>600?ajax(getListURL(a),"GET",null,populateListDetails):populateListDetails(null)}function populateListDetails(a){var b=document.getElementById("listSelect").value;return a&&"failed"==a.status?void refreshLists(getList):(cache.listLocations||(cache.listLocations={}),a&&(cache.listLocations[a.data.id]={},cache.listLocations[a.data.id].data=a.data.list,cache.listLocations[a.data.id].lastUpdated=Date.now()),void(initialLoad||(clearMapMarkers(),display=b,cache.listLocations[b].data.forEach(function(a){renderLocation(a)}),selectRandomLocationFromList())))}function selectRandomLocationFromList(){var a=document.getElementById("listSelect").value;if(!cache.listLocations[a]||(cache.listLocations[a].lastUpdated-Date.now())/1e3>600)return void getList();display!=a&&(clearMapMarkers(),display=a,cache.listLocations[a].data.forEach(function(a){renderLocation(a)}));var b=cache.listLocations[a].data,c=Math.floor(Math.random()*b.length);if(b.length>1)for(;c==previousIndex.list;)c=Math.floor(Math.random()*b.length);previousIndex.list=c,google.maps.event.trigger(randomLocation[c],"click")}function getSearchResults(){var a=locationSearchURL(distance);ajax(a,"GET",null,receiveSearchResults)}function receiveSearchResults(a){cache.search={},cache.search.data=a.data,cache.search.lastUpdated=Date.now(),initialLoad=!1,clearMapMarkers(),display="search",cache.search.data.forEach(function(a){renderLocation(a)}),selectRandomLocationFromResults()}function selectRandomLocationFromResults(){if(!cache.search||!cache.search.data||0==cache.search.data.length)return void getSearchResults();"search"!=display&&(clearMapMarkers(),display="search",cache.search.data.forEach(function(a){renderLocation(a)}));var a=Math.floor(Math.random()*cache.search.data.length);if(cache.search.data.length>1)for(;a==previousIndex.search;)a=Math.floor(Math.random()*cache.search.data.length);previousIndex.search=a,google.maps.event.trigger(randomLocation[a],"click")}function clearMapMarkers(){if(randomLocation.length>0){for(var a=0;a<randomLocation.length;a++)randomLocation[a].setMap(null),randomLocation[a]=null;randomLocation=[]}if(randomLocationListener.length>0){for(var a=0;a<randomLocationListener.length;a++)google.maps.event.removeListener(randomLocationListener[a]),randomLocationListener[a]=null;randomLocationListener=[]}}function renderLocation(a){dust.render("app/suggestedLocation",a,function(b,c){var d=new google.maps.LatLng(a.coords[1],a.coords[0]);randomLocation.push(new google.maps.Marker({optimized:!1,position:d,map:map,zIndex:0,icon:{url:a.photo.prefix+"32x32"+a.photo.suffix,scaledSize:{width:32,height:32}}}));var e=randomLocation.length-1;randomLocationListener.push(google.maps.event.addListener(randomLocation[e],"click",function(){randomLocationInfoWindow.setContent(c),randomLocationInfoWindow.open(map,randomLocation[e])}))})}var lng=103.844,lat=1.2921,distance=500,initialLoad=!0,previousIndex={};previousIndex.search=-1,previousIndex.list=-1;var cache={};cache.loggedIn=loggedIn;var map=null,curLocation=null,curLocationListener=null,curLocationInfoWindow=null;google.maps.event.addDomListener(window,"load",initialize);var randomLocation=[],randomLocationInfoWindow=new google.maps.InfoWindow({content:"No content",maxWidth:200}),randomLocationListener=[],display=null;startLocationServices(),loggedIn&&getLists(),dust.render("app/buttons",cache,function(a,b){document.getElementById("buttonsContainer").innerHTML=b});
+'use strict';
+
+var lng = 103.844;
+var lat = 1.2921;
+var distance = 500;
+
+//variables to determine if list results should be loaded
+var initialLoad = true;
+
+var previousIndex = {};
+previousIndex['search'] = -1;
+previousIndex['list'] = -1;
+
+//cache for data
+var cache = {};
+cache.loggedIn = loggedIn;
+
+//map related variables
+var map = null;
+var curLocation = null;
+var curLocationListener = null;
+var curLocationInfoWindow = null;
+function initialize() {
+    var mapOptions = {
+        center: { lat: lat, lng: lng},
+        zoom: 16,
+
+    };
+    map = new google.maps.Map(document.getElementById('map'),
+        mapOptions);
+    //current location marker + events
+    curLocation = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+        map: map,
+        draggable:true,
+        animation: google.maps.Animation.DROP,
+        zIndex: 100
+    });
+    google.maps.event.addListener(curLocation, 'dragend', function(){
+        lat = curLocation.getPosition().lat();
+        lng = curLocation.getPosition().lng();
+        map.setCenter(curLocation.position);
+        getSearchResults();
+    });
+    curLocationInfoWindow = new google.maps.InfoWindow({
+          content: "You are here!"
+      });
+    curLocationListener = google.maps.event.addListener(curLocation, 'click', function() {
+        curLocationInfoWindow.open(map,curLocation);
+    });;
+
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    
+//stores the locations
+var randomLocation = [];
+var randomLocationInfoWindow = new google.maps.InfoWindow({
+    content: 'No content',
+    maxWidth: 200
+});
+var randomLocationListener = [];
+//stores what is currently being displayed
+var display = null;
+function startLocationServices(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(position){
+            lng = position.coords.longitude;
+            lat = position.coords.latitude;
+            if(map){
+                var center = new google.maps.LatLng(lat, lng);
+                map.setCenter(center);
+                curLocation.setPosition(center);
+                getSearchResults();
+            }
+            else{
+                setTimeout(startLocationServices, 2000)
+            }
+        }, function(err){
+            alert(err.message);
+            getSearchResults();
+        }, {enableHighAccuracy:true});
+    }
+}
+
+startLocationServices();
+
+function refreshListsURL(){
+    return '/';
+}
+function locationSearchURL(radius){
+    if(!radius){
+        radius = 500;
+    }
+    return '/v1/location/near/' + lng + '/' + lat + '/distance/' + radius;
+}
+
+function getListsURL(){
+    return '/v1/user/list/all';
+}
+
+function getListURL(id){
+    return '/v1/user/list/' + encodeURIComponent(id);
+}
+
+function refreshLists(callback){
+    ajax(refreshListsURL(), 'GET', null, callback);
+}
+
+function getLists(){
+    if(!cache.lists || (cache.lists.lastUpdated - Date.now()) / 1000 > 600){
+        ajax(getListsURL(), 'GET', null, populateListOptions);
+    }
+    else{
+        populateListOptions(null);
+    }
+    
+}
+
+function populateListOptions(lists){
+    if(lists.status == 'failed'){
+        refreshLists(getLists);
+        return;
+    }
+    if(lists){
+        cache.lists = {};
+        cache.lists.data = lists.data;
+        cache.lists.lastUpdated = Date.now();
+        
+    }
+    dust.render('app/listSelect', cache.lists, function(err, out){
+        document.getElementById('listSelectContainer').innerHTML = out;
+        document.getElementById('listSelectContainer').className = 'show';
+        document.getElementById('listSelect').addEventListener('change', getList);
+    })
+    getList();
+}
+
+function getList(){
+    var id = document.getElementById('listSelect').value;
+    if(!cache.listLocations || !cache.listLocations[id] || (cache.listLocations[id].lastUpdated - Date.now()) / 1000 > 600){
+        ajax(getListURL(id), 'GET', null, populateListDetails);
+    }
+    else{
+        populateListDetails(null);
+    }
+    
+}
+
+function populateListDetails(locations){
+    var id = document.getElementById('listSelect').value;
+    if(locations && locations.status == 'failed'){
+        refreshLists(getList);
+        return;
+    }
+    if(!cache.listLocations){
+        cache.listLocations = {};
+    }
+    if(locations){
+        cache.listLocations[locations.data.id] = {};
+        cache.listLocations[locations.data.id].data = locations.data.list;
+        cache.listLocations[locations.data.id].lastUpdated = Date.now();
+    }
+    if(!initialLoad){
+        clearMapMarkers();
+        display = id;
+        cache.listLocations[id].data.forEach(function(location){
+            renderLocation(location);
+        });
+        selectRandomLocationFromList();
+    }
+}
+
+function selectRandomLocationFromList(){
+    var id = document.getElementById('listSelect').value;
+
+    if(!cache.listLocations[id] || (cache.listLocations[id].lastUpdated - Date.now()) / 1000 > 600){
+        getList();
+        return;
+    }
+    else{
+        if(display != id){
+            clearMapMarkers();
+            display = id;
+            cache.listLocations[id].data.forEach(function(location){
+                renderLocation(location);
+            });
+        }
+        var locations = cache.listLocations[id].data;
+        var random = Math.floor(Math.random()*locations.length);
+        if(locations.length > 1){
+            while(random == previousIndex['list']){
+                random = Math.floor(Math.random()*locations.length);
+            }
+        }
+        previousIndex['list'] = random;
+        google.maps.event.trigger(randomLocation[random], 'click');
+
+    }
+}
+
+function getSearchResults(){
+    var url = locationSearchURL(distance);
+    ajax(url, 'GET', null, receiveSearchResults);
+}
+function receiveSearchResults(results){
+    cache.search = {};
+    cache.search.data = results.data;
+    cache.search.lastUpdated = Date.now();
+    initialLoad = false;
+    clearMapMarkers();
+    display = 'search';
+    cache.search.data.forEach(function(location){
+        renderLocation(location);
+    });
+    selectRandomLocationFromResults();
+}
+
+function selectRandomLocationFromResults(){
+    if(!cache.search || !cache.search.data || cache.search.data.length == 0){
+        getSearchResults();
+        return;
+    }
+    else{
+        if(display != 'search'){
+            clearMapMarkers();
+            display = 'search';
+            cache.search.data.forEach(function(location){
+                renderLocation(location);
+            });
+        }
+        var random = Math.floor(Math.random()*cache.search.data.length);
+        if(cache.search.data.length > 1){
+            while(random == previousIndex['search']){
+                random = Math.floor(Math.random()*cache.search.data.length);
+            }
+        }
+        previousIndex['search'] = random;
+        google.maps.event.trigger(randomLocation[random], 'click');
+    }
+}
+
+function clearMapMarkers(){
+    if(randomLocation.length > 0){
+        for(var i = 0; i < randomLocation.length; i++){
+            randomLocation[i].setMap(null);
+            randomLocation[i] = null;
+        }
+        randomLocation = [];
+    }
+    if(randomLocationListener.length > 0){
+        for(var i = 0; i < randomLocationListener.length; i++){
+            google.maps.event.removeListener(randomLocationListener[i]);
+            randomLocationListener[i] = null;
+        }
+        randomLocationListener = [];
+    }
+}
+function renderLocation(location){
+    dust.render('app/suggestedLocation', location, function(err, out){
+        var coords = new google.maps.LatLng(location.coords[1], location.coords[0]);
+        randomLocation.push(new google.maps.Marker({
+            optimized: false,
+            position: coords,
+            map: map,
+            zIndex: 0,
+            icon: {
+                url: location.photo.prefix + "32x32" + location.photo.suffix,
+                scaledSize: {
+                    width: 32,
+                    height: 32
+                }
+            }
+        }));
+        var id = randomLocation.length - 1;
+        randomLocationListener.push(google.maps.event.addListener(randomLocation[id], 'click', function() {
+            randomLocationInfoWindow.setContent(out);
+            randomLocationInfoWindow.open(map, randomLocation[id]);
+        }));
+    });
+}
+if(loggedIn){
+    getLists();
+}
+dust.render('app/buttons', cache, function(err, out){
+    document.getElementById('buttonsContainer').innerHTML = out;
+});

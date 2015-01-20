@@ -1,1 +1,76 @@
-#main-body{width:100%;padding-top:36px;z-index:1}#app{padding:0 20px}#map{height:calc(100% - 36px);width:100%;z-index:-1;position:absolute}img[src*="4sq"]{background-color:#d3d3d3;border-radius:100%}.center{margin-left:auto;margin-right:auto}.locationPhoto{background-size:cover;background-color:#d3d3d3;height:100px;width:100px;margin:auto;display:block}.locationDetails{text-align:center}.locationDetails h3,.locationDetails h4,.locationDetails p{margin:0}.button{margin:0 10px}#buttonsContainer,#listSelectContainer,#loadingContainer,#suggestedLocationContainer{padding:10px 0}.hide{display:none}.show{display:block}@media (min-width:501px){#nav-bar{float:right;display:inline-block}#nav-bar-mobile{display:none}}@media (max-width:500px){#nav-bar{display:none}#nav-bar-mobile{float:right;display:inline-block}}
+#main-body{
+	width: 100%;
+	padding-top: 36px;
+	z-index: 1;
+}
+#app{
+	padding: 0px 20px;
+}
+#map{
+	height: calc(100% - 36px);
+	width: 100%;
+	z-index: -1;
+	position: absolute;
+}
+/* css for all foursquare images */
+img[src*="4sq"]{
+	background-color: #d3d3d3;
+	border-radius: 100%;
+}
+
+.center{
+	margin-left: auto;
+	margin-right: auto;
+}
+.locationPhoto{
+	background-size: cover;
+	background-color: #d3d3d3;
+	height: 100px;
+	width: 100px;
+	margin: auto;
+	display:block;
+}
+
+.locationDetails{
+	text-align: center;
+}
+
+.locationDetails h3, .locationDetails h4, .locationDetails p{
+	margin: 0px;
+}
+
+.button{
+	margin: 0 10px;
+}
+
+#listSelectContainer, #loadingContainer, #suggestedLocationContainer, #buttonsContainer{
+	padding: 10px 0px;
+}
+
+.hide{
+	display: none;
+}
+
+.show{
+	display: block;
+}
+
+@media (min-width: 501px){
+	#nav-bar{
+		float:right;
+		display: inline-block;
+	}
+	#nav-bar-mobile{
+		display: none;
+	}
+}
+
+@media (max-width: 500px){
+	#nav-bar{
+		display: none;
+	}
+	#nav-bar-mobile{
+		float:right;
+		display: inline-block;
+	}
+}
