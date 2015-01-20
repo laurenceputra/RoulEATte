@@ -32,7 +32,10 @@
     <script type="text/javascript">
         function goToNewLink(){
             var newPage = document.getElementById('nav-select').value;
-            if(newPage == "about"){
+            if(newPage == "homepage"){
+                window.location.href = "/";
+            }
+            else if(newPage == "about"){
                 window.location.href = "/about";
             }
             else if(newPage == "privacy"){
@@ -64,6 +67,7 @@
             <li>
                 <select id="nav-select" onchange="goToNewLink()">
                     <option>Menu</option>
+                    <option value="homepage">Homepage</option>
                     <option value="about">About</option>
                     <option value="privacy">Privacy</option>
                     {?session.user_id}
