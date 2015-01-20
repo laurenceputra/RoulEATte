@@ -29,11 +29,28 @@
     <script type="text/javascript" src="/js/external.js"></script>
     <script type="text/javascript" src="/js/en_US_templates.js"></script>
     <script type="text/javascript" src="/js/utils.js"></script>
+    <script type="text/javascript">
+        function goToNewLink(){
+            var newPage = document.getElementById('nav-select').value;
+            if(newPage == "homepage"){
+                window.location.href = "/";
+            }
+            else if(newPage == "about"){
+                window.location.href = "/about";
+            }
+            else if(newPage == "privacy"){
+                window.location.href = "/privacy";
+            }
+            else if(newPage == "logout"){
+                window.location.href = "/user/logout";
+            }
+            else if(newPage == "login"){
+                window.location.href = "/user/foursquare";
+            }
+        }
+    </script>
 </head>
 <body>
-
-
-
 <div class="header">
     <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
         <a class="pure-menu-heading" href="/">RoulEATte</a>
@@ -48,14 +65,15 @@
         </ul>
         <ul id='nav-bar-mobile'>
             <li>
-                <select>
+                <select id="nav-select" onchange="goToNewLink()">
                     <option>Menu</option>
-                    <option onclick="window.location.href='/about'">About</option>
-                    <option onclick="window.location.href='/privacy'">Privacy</option>
+                    <option value="homepage">Homepage</option>
+                    <option value="about">About</option>
+                    <option value="privacy">Privacy</option>
                     {?session.user_id}
-                    <option onclick="window.location.href='/user/logout'">Logout</option>
+                    <option value="logout">Logout</option>
                     {:else}
-                    <option onclick="window.location.href='/user/foursquare'">Login/Signup</option>
+                    <option value="login">Login/Signup</option>
                     {/session.user_id}
                 </select>
 
@@ -63,7 +81,6 @@
         </ul>
     </div>
 </div>
-
 <div id="main-body">
 	{+body /}
 </div>
