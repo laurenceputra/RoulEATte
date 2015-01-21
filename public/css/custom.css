@@ -28,6 +28,7 @@
 	bottom: 32px;
 	right: 32px;
 	height: calc(100% - 80px);
+	max-width: 500px;
 	width: calc(100% - 64px);
 	background-color: white;
 	z-index: 2;
@@ -36,6 +37,7 @@
 #settings-close{
 	top: 8px;
 	right: 8px;
+	font-size: 24px;
 	z-index: 3;
 	position: absolute;
 }
@@ -72,11 +74,51 @@ img[src*="4sq"]{
 .button{
 	margin: 0 10px;
 }
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.money-button {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 0px;
+}
 
 #listSelectContainer, #loadingContainer, #suggestedLocationContainer, #buttonsContainer{
 	padding: 10px 0px;
 }
-
+.settings-container{
+	padding: 8px 16px 0px;
+}
+#distance-value{
+	height: 16px;
+	padding-top: 4px;
+}
+#distance-show-value{
+	line-height: 16px;
+}
 .hide{
 	display: none;
 }
