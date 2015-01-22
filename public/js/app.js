@@ -137,6 +137,9 @@ function getList(){
     if(id != 'rouleatteNearMe' && (!cache.listLocations || !cache.listLocations[id] || (cache.listLocations[id].lastUpdated - Date.now()) / 1000 > 600)){
         ajax(getListURL(id), 'GET', null, populateListDetails);
     }
+    else if(id == 'rouleatteNearMe'){
+        selectRandomLocationFromResults();
+    }
     else{
         populateListDetails(null);
     }
