@@ -34,7 +34,7 @@ module.exports = function (router) {
                         return;
                     }
                     if(!foursquare){
-                        failure(res, 'Data not found', '/');
+                        failure(res, 'Data not found: list/all', '/');
                         return;
                     }
                     var lists = [];
@@ -62,7 +62,7 @@ module.exports = function (router) {
                         return;
                     }
                     if(!foursquare){
-                        failure(res, 'Data not found', '/');
+                        failure(res, 'Data not found: list/:id', '/');
                         return;
                     }
                     if(foursquare.lists[decodeURIComponent(req.params.id)]){
@@ -73,7 +73,7 @@ module.exports = function (router) {
                         success(res, data);
                     }
                     else{
-                        failure(res, 'Data not found', '/');
+                        failure(res, 'Data not found: list/:id 2', '/');
                     }
                     
                 });
@@ -115,21 +115,22 @@ module.exports = function (router) {
         }
     }
 
-    router.get('/location/near/:lng/:lat/distance/:radius',
+    router.get('/location/near/:lng/:lat/distance/:radius/max/:num',
         function (req, res) {
             var args = {};
             args.lng = parseFloat(req.params.lng);
             args.lat = parseFloat(req.params.lat);
             args.meter = req.params.radius;
             args.distance = utils.convertMeterToDegree(req.params.radius);
+            args.num = parseInt(req.params.num);
             args.res = res;
             args.id = utils.isLoggedIn(req);
             args.foursquare_token = utils.getCurrentToken(req);
-            Locations.geoNear([args.lng, args.lat], {maxDistance: args.distance, num: 50}, function(err, locations){
+            Locations.geoNear([args.lng, args.lat], {maxDistance: args.distance, num: args.num}, function(err, locations){
                 if(err){
                     console.log(err);
                 }
-                if(err || locations.length < 15){
+                if(err || (locations.length < args.num && locations.length < 15)){
                     args.backup = locations;
                     foursquareConfig.getLocations(args, getLocationCallback);
                 }

@@ -1,10 +1,9 @@
-{?loggedIn}
-<div style="width:310px; margin:auto">
-	<button class="button pure-button" onclick="selectRandomLocationFromResults();">Random</button>
-	<button class="button pure-button" onclick="selectRandomLocationFromList();">Random from List</button>
-</div>
-{:else}
 <div style="width:120px; margin:auto">
-	<button class="button pure-button" onclick="selectRandomLocationFromResults();">Random</button>
+	<button class="button pure-button pure-button-primary" style="width:120px; margin:auto" onclick="selectRandomLocation();">Random</button>
 </div>
-{/loggedIn}
+<div style="width:200px; margin:auto">
+	{?loggedIn}
+	<p class="subtitle">Currently searching from <span id="current-search-list">places near you</span>. Change it by pressing the settings gear.</p>
+	{/loggedIn}
+</div>
+

@@ -16,6 +16,34 @@
 	height: 24px;
 	margin: 5px;
 }
+#settings-icon{
+	bottom: 16px;
+	right: 16px;
+	z-index: 1;
+	height: 32px;
+	width: 32px;
+	position: absolute;
+}
+#settings{
+	bottom: 32px;
+	right: 32px;
+	height: calc(100% - 80px);
+	max-width: 500px;
+	width: calc(100% - 64px);
+	background-color: white;
+	z-index: 2;
+	position: absolute;
+}
+#settings-close{
+	top: 8px;
+	right: 8px;
+	font-size: 24px;
+	z-index: 3;
+	position: absolute;
+}
+#settings-close a{
+	text-decoration: none;
+}
 /* css for all foursquare images */
 img[src*="4sq"]{
 	background-color: #d3d3d3;
@@ -46,11 +74,53 @@ img[src*="4sq"]{
 .button{
 	margin: 0 10px;
 }
-
-#listSelectContainer, #loadingContainer, #suggestedLocationContainer, #buttonsContainer{
-	padding: 10px 0px;
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.money-button {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 0px;
+}
+
+#loadingContainer, #suggestedLocationContainer, #buttonsContainer{
+	padding: 10px 0px;
+}
+#listSelectContainer, #distance-slider, #num-result-slider, #location-refresh{
+	padding: 8px 16px 0px;
+}
+.subtitle{
+	font-size: 8px;
+	text-align: center;
+	background-color: white;
+	border-radius: 4px;
+}
+#distance-value, #num-result-value{
+	width: 100%;
+}
 .hide{
 	display: none;
 }

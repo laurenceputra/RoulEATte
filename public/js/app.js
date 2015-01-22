@@ -2,7 +2,6 @@
 
 var lng = 103.844;
 var lat = 1.2921;
-var distance = 500;
 
 //variables to determine if list results should be loaded
 var initialLoad = true;
@@ -23,7 +22,7 @@ var curLocationInfoWindow = null;
 function initialize() {
     var mapOptions = {
         center: { lat: lat, lng: lng},
-        zoom: 16,
+        zoom: 18,
 
     };
     map = new google.maps.Map(document.getElementById('map'),
@@ -89,10 +88,7 @@ function refreshListsURL(){
     return '/';
 }
 function locationSearchURL(radius){
-    if(!radius){
-        radius = 500;
-    }
-    return '/v1/location/near/' + lng + '/' + lat + '/distance/' + radius;
+    return '/v1/location/near/' + lng + '/' + lat + '/distance/' + document.getElementById('distance-value').value + '/max/' + document.getElementById('num-result-value').value;
 }
 
 function getListsURL(){
@@ -138,8 +134,11 @@ function populateListOptions(lists){
 
 function getList(){
     var id = document.getElementById('listSelect').value;
-    if(!cache.listLocations || !cache.listLocations[id] || (cache.listLocations[id].lastUpdated - Date.now()) / 1000 > 600){
+    if(id != 'rouleatteNearMe' && (!cache.listLocations || !cache.listLocations[id] || (cache.listLocations[id].lastUpdated - Date.now()) / 1000 > 600)){
         ajax(getListURL(id), 'GET', null, populateListDetails);
+    }
+    else if(id == 'rouleatteNearMe'){
+        selectRandomLocationFromResults();
     }
     else{
         populateListDetails(null);
@@ -200,20 +199,25 @@ function selectRandomLocationFromList(){
 }
 
 function getSearchResults(){
-    var url = locationSearchURL(distance);
+    var url = locationSearchURL();
     ajax(url, 'GET', null, receiveSearchResults);
 }
 function receiveSearchResults(results){
-    cache.search = {};
-    cache.search.data = results.data;
-    cache.search.lastUpdated = Date.now();
-    initialLoad = false;
-    clearMapMarkers();
-    display = 'search';
-    cache.search.data.forEach(function(location){
-        renderLocation(location);
-    });
-    selectRandomLocationFromResults();
+    if(results.data.length == 0){
+        alert("No food locations found near you!");
+    }
+    else{
+        cache.search = {};
+        cache.search.data = results.data;
+        cache.search.lastUpdated = Date.now();
+        initialLoad = false;
+        clearMapMarkers();
+        display = 'search';
+        cache.search.data.forEach(function(location){
+            renderLocation(location);
+        });
+        selectRandomLocationFromResults();
+    }
 }
 
 function selectRandomLocationFromResults(){
@@ -240,6 +244,36 @@ function selectRandomLocationFromResults(){
     }
 }
 
+function selectRandomLocation(){
+    var listContainer = document.getElementById('listSelect');
+    if(listContainer && listContainer.value !== "rouleatteNearMe"){
+        selectRandomLocationFromList();
+    }
+    else{
+        selectRandomLocationFromResults();
+    }
+}
+function updateRandomHintText(){
+    var select = document.getElementById('listSelect');
+    if(select.value == "rouleatteNearMe"){
+        document.getElementById('current-search-list').innerHTML = "places near you";
+    }
+    else{
+        document.getElementById('current-search-list').innerHTML = "the list " + select.options[select.selectedIndex].text;
+    }
+}
+function updateSettings(){
+    if(document.getElementById('listSelect').value == "rouleatteNearMe"){
+        document.getElementById('distance-slider').className = "show";
+        document.getElementById('num-result-slider').className = "show";
+        document.getElementById('location-refresh').className = "show";
+    }
+    else{
+        document.getElementById('distance-slider').className = "hide";
+        document.getElementById('num-result-slider').className = "hide";
+        document.getElementById('location-refresh').className = "hide";
+    }
+}
 function clearMapMarkers(){
     if(randomLocation.length > 0){
         for(var i = 0; i < randomLocation.length; i++){
