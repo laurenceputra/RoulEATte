@@ -1,5 +1,10 @@
-<select id="listSelect" style="width:100%">
+<h4>Your lists</h4>
+<select id="listSelect" style="width:100%" onchange="updateRandomHintText()">
+	<option value="rouleatteNearMe">Near me</option>
 	{#data}
 	<option value="{id}">{name}</option>
 	{/data}
 </select>
+<script type="text/javascript">
+	updateRandomHintText();
+</script>

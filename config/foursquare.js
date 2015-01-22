@@ -24,7 +24,7 @@ module.exports = function(){
     foursquare.getLocations = function(args, callback){
         request({
             method: 'GET',
-            uri: 'https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId +'&client_secret=' + foursquare.clientSecret) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion() + '&venuePhotos=1'
+            uri: 'https://api.foursquare.com/v2/venues/explore?' + (args.id ? 'oauth_token=' + args.foursquare_token : 'client_id=' + foursquare.clientId +'&client_secret=' + foursquare.clientSecret) + '&ll=' + args.lat + ',' + args.lng + '&radius=' + args.meter + '&limit=50&section=food&v=' + utils.getFoursquareVersion() + '&venuePhotos=1&limit=' + args.num
         }, function(err, response, body){
             callback(args.res, args.backup, err, response, body);
         });

@@ -88,7 +88,7 @@ function refreshListsURL(){
     return '/';
 }
 function locationSearchURL(radius){
-    return '/v1/location/near/' + lng + '/' + lat + '/distance/' + radius;
+    return '/v1/location/near/' + lng + '/' + lat + '/distance/' + document.getElementById('distance-value').value + '/max/' + document.getElementById('num-result-value').value;
 }
 
 function getListsURL(){
@@ -134,7 +134,7 @@ function populateListOptions(lists){
 
 function getList(){
     var id = document.getElementById('listSelect').value;
-    if(!cache.listLocations || !cache.listLocations[id] || (cache.listLocations[id].lastUpdated - Date.now()) / 1000 > 600){
+    if(id != 'rouleatteNearMe' && (!cache.listLocations || !cache.listLocations[id] || (cache.listLocations[id].lastUpdated - Date.now()) / 1000 > 600)){
         ajax(getListURL(id), 'GET', null, populateListDetails);
     }
     else{
@@ -196,20 +196,25 @@ function selectRandomLocationFromList(){
 }
 
 function getSearchResults(){
-    var url = locationSearchURL(document.getElementById('distance-value').value);
+    var url = locationSearchURL();
     ajax(url, 'GET', null, receiveSearchResults);
 }
 function receiveSearchResults(results){
-    cache.search = {};
-    cache.search.data = results.data;
-    cache.search.lastUpdated = Date.now();
-    initialLoad = false;
-    clearMapMarkers();
-    display = 'search';
-    cache.search.data.forEach(function(location){
-        renderLocation(location);
-    });
-    selectRandomLocationFromResults();
+    if(results.data.length == 0){
+        alert("No food locations found near you!");
+    }
+    else{
+        cache.search = {};
+        cache.search.data = results.data;
+        cache.search.lastUpdated = Date.now();
+        initialLoad = false;
+        clearMapMarkers();
+        display = 'search';
+        cache.search.data.forEach(function(location){
+            renderLocation(location);
+        });
+        selectRandomLocationFromResults();
+    }
 }
 
 function selectRandomLocationFromResults(){
@@ -236,6 +241,24 @@ function selectRandomLocationFromResults(){
     }
 }
 
+function selectRandomLocation(){
+    var listContainer = document.getElementById('listSelect');
+    if(listContainer && listContainer.value !== "rouleatteNearMe"){
+        selectRandomLocationFromList();
+    }
+    else{
+        selectRandomLocationFromResults();
+    }
+}
+function updateRandomHintText(){
+    var select = document.getElementById('listSelect');
+    if(select.value == "rouleatteNearMe"){
+        document.getElementById('current-search-list').innerHTML = "places near you";
+    }
+    else{
+        document.getElementById('current-search-list').innerHTML = "the list " + select.options[select.selectedIndex].text;
+    }
+}
 function clearMapMarkers(){
     if(randomLocation.length > 0){
         for(var i = 0; i < randomLocation.length; i++){
