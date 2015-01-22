@@ -2,7 +2,6 @@
 
 var lng = 103.844;
 var lat = 1.2921;
-var distance = 500;
 
 //variables to determine if list results should be loaded
 var initialLoad = true;
@@ -23,7 +22,7 @@ var curLocationInfoWindow = null;
 function initialize() {
     var mapOptions = {
         center: { lat: lat, lng: lng},
-        zoom: 16,
+        zoom: 17,
 
     };
     map = new google.maps.Map(document.getElementById('map'),
@@ -89,9 +88,6 @@ function refreshListsURL(){
     return '/';
 }
 function locationSearchURL(radius){
-    if(!radius){
-        radius = 500;
-    }
     return '/v1/location/near/' + lng + '/' + lat + '/distance/' + radius;
 }
 
@@ -200,7 +196,7 @@ function selectRandomLocationFromList(){
 }
 
 function getSearchResults(){
-    var url = locationSearchURL(distance);
+    var url = locationSearchURL(document.getElementById('distance-value').value);
     ajax(url, 'GET', null, receiveSearchResults);
 }
 function receiveSearchResults(results){
