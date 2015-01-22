@@ -1,5 +1,5 @@
 <h4>Your lists</h4>
-<select id="listSelect" style="width:100%" onchange="updateRandomHintText()">
+<select id="listSelect" style="width:100%" onchange="updateRandomHintText(); updateSettings();">
 	<option value="rouleatteNearMe">Near me</option>
 	{#data}
 	<option value="{id}">{name}</option>

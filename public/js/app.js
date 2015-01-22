@@ -259,6 +259,18 @@ function updateRandomHintText(){
         document.getElementById('current-search-list').innerHTML = "the list " + select.options[select.selectedIndex].text;
     }
 }
+function updateSettings(){
+    if(document.getElementById('listSelect').value == "rouleatteNearMe"){
+        document.getElementById('distance-slider').className = "show";
+        document.getElementById('num-result-slider').className = "show";
+        document.getElementById('location-refresh').className = "show";
+    }
+    else{
+        document.getElementById('distance-slider').className = "hide";
+        document.getElementById('num-result-slider').className = "hide";
+        document.getElementById('location-refresh').className = "hide";
+    }
+}
 function clearMapMarkers(){
     if(randomLocation.length > 0){
         for(var i = 0; i < randomLocation.length; i++){
