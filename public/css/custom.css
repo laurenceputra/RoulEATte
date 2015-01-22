@@ -115,6 +115,7 @@ img[src*="4sq"]{
 #distance-value{
 	height: 16px;
 	padding-top: 4px;
+	width: 100%;
 }
 #distance-show-value{
 	line-height: 16px;
