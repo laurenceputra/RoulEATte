@@ -22,7 +22,7 @@ var curLocationInfoWindow = null;
 function initialize() {
     var mapOptions = {
         center: { lat: lat, lng: lng},
-        zoom: 17,
+        zoom: 18,
 
     };
     map = new google.maps.Map(document.getElementById('map'),
