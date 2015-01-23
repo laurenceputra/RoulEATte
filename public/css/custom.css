@@ -107,7 +107,7 @@ img[src*="4sq"]{
 }
 
 #loadingContainer, #suggestedLocationContainer, #buttonsContainer{
-	padding: 10px 0px;
+	padding: 4px 0px;
 }
 #listSelectContainer, #distance-slider, #num-result-slider, #location-refresh{
 	padding: 8px 16px 0px;
