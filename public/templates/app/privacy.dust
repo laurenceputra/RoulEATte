@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-<div id="app" class="pure-g" style="padding-top:36px">
+<div class="pure-g" style="padding-top:36px">
 	<div class="pure-u-1 pure-u-md-1-3"></div>
 	<div id="main" class="pure-u-1 pure-u-md-1-3">
 		<h2>What do we collect, and how do we use it?</h2>
