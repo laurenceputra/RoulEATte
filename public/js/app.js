@@ -27,6 +27,24 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById('map'),
         mapOptions);
+    var styles = [
+        {
+            featureType: "road",
+            elementType: "geometry",
+            stylers: [
+                { lightness: 50 },
+                { visibility: "simplified" }
+            ]
+        },{
+            featureType: "poi",
+            elementType: "all",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }
+    ];
+    map.setOptions({styles: styles});
+
     //current location marker + events
     curLocation = new google.maps.Marker({
         position: new google.maps.LatLng(lat, lng),
