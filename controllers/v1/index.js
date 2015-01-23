@@ -126,23 +126,29 @@ module.exports = function (router) {
             args.res = res;
             args.id = utils.isLoggedIn(req);
             args.foursquare_token = utils.getCurrentToken(req);
-            Locations.geoNear([args.lng, args.lat], {maxDistance: args.distance, num: args.num}, function(err, locations){
-                if(err){
-                    console.log(err);
-                }
-                if(err || (locations.length < args.num && locations.length < 15)){
-                    args.backup = locations;
-                    foursquareConfig.getLocations(args, getLocationCallback);
-                }
-                else{
-                    var returnLocations = [];
-                    locations.forEach(function(location){
-                        returnLocations.push(location.obj);
-                    });
-                    success(res, returnLocations);
-                }
-            });
-    });
+            if(args.id){
+                foursquareConfig.getLocations(args, getLocationCallback);
+            }
+            else{
+                Locations.geoNear([args.lng, args.lat], {maxDistance: args.distance, num: args.num}, function(err, locations){
+                    if(err){
+                        console.log(err);
+                    }
+                    if(err || (locations.length < args.num && locations.length < 15)){
+                        args.backup = locations;
+                        foursquareConfig.getLocations(args, getLocationCallback);
+                    }
+                    else{
+                        var returnLocations = [];
+                        locations.forEach(function(location){
+                            returnLocations.push(location.obj);
+                        });
+                        success(res, returnLocations);
+                    }
+                });
+            }   
+        }
+    );
 
     router.get('/location/:id',
         function (req, res) {
