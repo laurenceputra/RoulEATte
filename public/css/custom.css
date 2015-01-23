@@ -111,6 +111,15 @@ img[src*="4sq"]{
 #loadingContainer, #suggestedLocationContainer{
 	padding: 10px 0px;
 }
+#buttonsContainer{
+	position: absolute;
+	bottom: 0px;
+	left: 50%;
+}
+#buttonsContainer div{
+	position: relative;
+	left:-50%;
+}
 #listSelectContainer, #distance-slider, #num-result-slider, #location-refresh{
 	padding: 8px 16px 0px;
 }
