@@ -4,7 +4,9 @@
 	z-index: 1;
 }
 #app{
-	padding: 0px 20px;
+	width: 100%;
+	position:absolute;
+	bottom:0px;
 }
 #map{
 	height: calc(100% - 36px);
@@ -106,7 +108,7 @@ img[src*="4sq"]{
 	border-radius: 0px;
 }
 
-#loadingContainer, #suggestedLocationContainer, #buttonsContainer{
+#loadingContainer, #suggestedLocationContainer{
 	padding: 10px 0px;
 }
 #listSelectContainer, #distance-slider, #num-result-slider, #location-refresh{

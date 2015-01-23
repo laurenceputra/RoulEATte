@@ -26,8 +26,8 @@
 	<div id="distance-slider">
 	<!-- 100m to 5km -->
 		<h4>Distance</h4>
-		<input id="distance-value" name="distance-value" type="range" min="50" max="1000" step="50" value="500" onchange="document.getElementById('distance-show-value').innerHTML=this.value;getSearchResults();">
-		<p style="margin:0px"><span id="distance-show-value">500</span>m</p>
+		<input id="distance-value" name="distance-value" type="range" min="50" max="1000" step="50" value="200" onchange="document.getElementById('distance-show-value').innerHTML=this.value;getSearchResults();">
+		<p style="margin:0px"><span id="distance-show-value">200</span>m</p>
 		<script type="text/javascript">
 			document.getElementById('distance-show-value').innerHTML = document.getElementById('distance-value').value;
 		</script>

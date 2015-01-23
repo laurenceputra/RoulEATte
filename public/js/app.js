@@ -310,6 +310,8 @@ function renderLocation(location){
         randomLocationListener.push(google.maps.event.addListener(randomLocation[id], 'click', function() {
             randomLocationInfoWindow.setContent(out);
             randomLocationInfoWindow.open(map, randomLocation[id]);
+            var center = randomLocation[id].position;
+            map.setCenter(center);
         }));
     });
 }
