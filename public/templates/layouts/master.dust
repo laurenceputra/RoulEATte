@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="RoulEATte is a map based food discovery app that helps you decide where to eat.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RoulEATte is a map based food discovery app that helps you decide where to eat.">
+    <meta property="og:title" content="RoulEATte" />
+    <meta property="og:url" content="http://rouleatte.geeksphere.net" />
+    <meta property="og:image" content="http://rouleatte.geeksphere.net/img/RoulEATte.png" />
 
     <title>RoulEATte</title>
 	<link rel="stylesheet" href="/css/pure-min.css">
