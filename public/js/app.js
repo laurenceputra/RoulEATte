@@ -60,7 +60,7 @@ function initialize() {
         getSearchResults();
     });
     curLocationInfoWindow = new google.maps.InfoWindow({
-          content: "<div class=\"locationDetails\" style=\"width:150px\">Drag me to your location!</div>",
+          content: "<div class=\"locationDetails\" style=\"width:150px\">Change your location in settings or by dragging!</div>",
           maxWidth: 200
       });
     curLocationListener = google.maps.event.addListener(curLocation, 'click', function() {
@@ -280,18 +280,6 @@ function updateRandomHintText(){
     }
     else{
         document.getElementById('current-search-list').innerHTML = "the list " + select.options[select.selectedIndex].text;
-    }
-}
-function updateSettings(){
-    if(document.getElementById('listSelect').value == "rouleatteNearMe"){
-        document.getElementById('distance-slider').className = "show";
-        document.getElementById('num-result-slider').className = "show";
-        document.getElementById('location-refresh').className = "show";
-    }
-    else{
-        document.getElementById('distance-slider').className = "hide";
-        document.getElementById('num-result-slider').className = "hide";
-        document.getElementById('location-refresh').className = "hide";
     }
 }
 function clearMapMarkers(){

@@ -9,9 +9,9 @@
 	var loggedIn = false;
 </script>
 {/session.user_id}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={mapsAPIKey}"></script>
 <div id="map"></div>
 <div id="buttonsContainer" class="show"></div>
 {>"app/settingsPanel" /}
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={mapsAPIKey}"></script>
 <script type="text/javascript" src="/js/app.js"></script>
 {/body}

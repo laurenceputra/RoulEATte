@@ -1,36 +1,32 @@
 <div id="settings" class="hide">
 	<div id="settings-close"><a href="#" onclick="toggleSettingsPanel()">x</a></div>
 	<div id="listSelectContainer" class="hide"></div>
-	<div id="locationInput">
+	<div id="location-input">
 		<h4>Location</h4>
-		<p>Location not showing up properly? type in your location here!</p>
-		<input type="text">
+		<input id="location-text-input" type="text">
 	</div>
 	<div id="distance-slider">
 	<!-- 100m to 5km -->
 		<h4>Distance</h4>
 		<input id="distance-value" name="distance-value" type="range" min="50" max="1000" step="50" value="200" oninput="document.getElementById('distance-show-value').innerHTML=this.value;" onchange="document.getElementById('distance-show-value').innerHTML=this.value;getSearchResults();">
 		<p style="margin:0px"><span id="distance-show-value">200</span>m</p>
-		<script type="text/javascript">
-			document.getElementById('distance-show-value').innerHTML = document.getElementById('distance-value').value;
-		</script>
 	</div>
 	<div id="num-result-slider">
 		<h4>Number of results</h4>
 		<input id="num-result-value" name="num-result-value" type="range" min="5" max="50" step="1" value="20" oninput="document.getElementById('num-result-show-value').innerHTML=this.value;" onchange="document.getElementById('num-result-show-value').innerHTML=this.value;getSearchResults();">
 		<p style="margin:0px"><span id="num-result-show-value">20</span></p>
-		<script type="text/javascript">
-			document.getElementById('num-result-show-value').innerHTML = document.getElementById('num-result-value').value;
-		</script>
 	</div>
 	<div id="location-refresh">
-		<button class="pure-button pure-button-primary" onclick="startLocationServices()">Refresh location</button>
+		<button class="pure-button pure-button-primary" onclick="startLocationServices(); document.getElementById('location-text-input').value=''">Refresh location</button>
 	</div>
 </div>
 <div id="settings-icon">
 	<a href="#" onclick="toggleSettingsPanel()"><img src="/img/settings.png"></a>
 </div>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script type="text/javascript">
+	document.getElementById('distance-show-value').innerHTML = document.getElementById('distance-value').value;
+	document.getElementById('num-result-show-value').innerHTML = document.getElementById('num-result-value').value;
 	function toggleSettingsPanel(){
 		var settingsPanel = document.getElementById('settings');
 		if(settingsPanel.className == 'hide'){
@@ -40,4 +36,29 @@
 			settingsPanel.className = 'hide';
 		}
 	}
+	function updateSettings(){
+    if(document.getElementById('listSelect').value == "rouleatteNearMe"){
+    	document.getElementById('location-input').className ="show";
+        document.getElementById('distance-slider').className = "show";
+        document.getElementById('num-result-slider').className = "show";
+        document.getElementById('location-refresh').className = "show";
+    }
+    else{
+    	document.getElementById('location-input').className ="hide";
+        document.getElementById('distance-slider').className = "hide";
+        document.getElementById('num-result-slider').className = "hide";
+        document.getElementById('location-refresh').className = "hide";
+    }
+}
+
+	var locationTextInputAutocomplete = new google.maps.places.Autocomplete(document.getElementById('location-text-input'), {});
+	google.maps.event.addListener(locationTextInputAutocomplete, 'place_changed', function() {
+		var place = locationTextInputAutocomplete.getPlace();
+		lat = place.geometry.location.lat();
+		lng = place.geometry.location.lng();
+		curLocation.setPosition(place.geometry.location);
+		map.setCenter(place.geometry.location);
+		getSearchResults();
+	});
+
 </script>

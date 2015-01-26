@@ -127,15 +127,15 @@ img[src*="4sq"]{
 #buttonsContainer div p{
 	margin: 0px;
 }
-#listSelectContainer, #locationInput, #distance-slider, #num-result-slider, #location-refresh{
-	padding: 8px 16px 8px;
+#listSelectContainer, #location-input, #distance-slider, #num-result-slider, #location-refresh{
+	padding: 8px 16px 0px;
 }
-#listSelectContainer h4, #locationInput h4, #distance-slider h4, #num-result-slider h4, #location-refresh h4{
-	padding: 0px;
+#listSelectContainer h4, #location-input h4, #distance-slider h4, #num-result-slider h4, #location-refresh h4{
+	padding: 8px;
 	margin: 0px;
 }
-#listSelectContainer p, #locationInput p, #distance-slider p, #num-result-slider p, #location-refresh p{
-	padding: 0px;
+#listSelectContainer p, #location-input p, #distance-slider p, #num-result-slider p, #location-refresh p{
+	padding: 8px;
 	margin: 0px;
 }
 .subtitle{
@@ -146,6 +146,9 @@ img[src*="4sq"]{
 }
 #distance-value, #num-result-value{
 	width: 100%;
+}
+.pac-container{
+	padding-top: 16px;
 }
 .hide{
 	display: none;
