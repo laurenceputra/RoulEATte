@@ -60,11 +60,12 @@ function initialize() {
         getSearchResults();
     });
     curLocationInfoWindow = new google.maps.InfoWindow({
-          content: "You are here!"
+          content: "Drag me to where you are!"
       });
     curLocationListener = google.maps.event.addListener(curLocation, 'click', function() {
         curLocationInfoWindow.open(map,curLocation);
     });;
+    google.maps.event.trigger(curLocation, 'click');
 
 }
 google.maps.event.addDomListener(window, 'load', initialize);
