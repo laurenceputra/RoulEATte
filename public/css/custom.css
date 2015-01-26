@@ -35,6 +35,11 @@
 	background-color: white;
 	z-index: 2;
 	position: absolute;
+	border-radius: 8px;
+	border-color: grey;
+	border-width: thin;
+	border-style: solid;
+	overflow-y: scroll;
 }
 #settings-close{
 	top: 8px;
