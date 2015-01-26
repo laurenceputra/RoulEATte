@@ -7,7 +7,7 @@
     <meta property="og:title" content="RoulEATte" />
     <meta property="og:url" content="http://rouleatte.geeksphere.net" />
     <meta property="og:image" content="http://rouleatte.geeksphere.net/img/RoulEATte.png" />
-
+    <link rel="shortcut icon" type="image/png"  href="/favicon.png" />
     <title>RoulEATte</title>
 	<link rel="stylesheet" href="/css/pure-min.css">
 
