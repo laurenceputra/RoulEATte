@@ -60,7 +60,7 @@ function initialize() {
         getSearchResults();
     });
     curLocationInfoWindow = new google.maps.InfoWindow({
-          content: "Drag me to where you are!"
+          content: "<div class=\"locationDetails\" class=\"pure-u-1\">Drag me to your location!</div>"
       });
     curLocationListener = google.maps.event.addListener(curLocation, 'click', function() {
         curLocationInfoWindow.open(map,curLocation);
