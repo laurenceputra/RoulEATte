@@ -17,7 +17,7 @@
 		<p style="margin:0px"><span id="num-result-show-value">20</span></p>
 	</div>
 	<div id="location-refresh">
-		<button class="pure-button pure-button-primary" onclick="startLocationServices(); document.getElementById('location-text-input').value=''">Refresh location</button>
+		<button class="pure-button pure-button-primary" onclick="startLocationServices(); document.getElementById('location-text-input').value='';toggleSettingsPanel();">Refresh location</button>
 	</div>
 </div>
 <div id="settings-icon">
@@ -59,6 +59,7 @@
 		curLocation.setPosition(place.geometry.location);
 		map.setCenter(place.geometry.location);
 		getSearchResults();
+		toggleSettingsPanel();
 	});
 
 </script>
