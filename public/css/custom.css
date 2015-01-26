@@ -1,3 +1,6 @@
+body{
+	min-width: 360px;
+}
 #main-body{
 	width: 100%;
 	padding-top: 36px;
@@ -119,11 +122,7 @@ img[src*="4sq"]{
 #buttonsContainer{
 	position: absolute;
 	bottom: 8px;
-	left: 50%;
-}
-#buttonsContainer div{
-	position: relative;
-	left:-50%;
+	left: calc(50% - 100px);
 }
 #buttonsContainer div p{
 	margin: 0px;
