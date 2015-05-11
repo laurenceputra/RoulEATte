@@ -83,25 +83,35 @@ var randomLocationListener = [];
 var display = null;
 function startLocationServices(){
     if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(position){
-            lng = position.coords.longitude;
-            lat = position.coords.latitude;
-            if(map){
-                var center = new google.maps.LatLng(lat, lng);
-                map.setCenter(center);
-                curLocation.setPosition(center);
-                getSearchResults();
-            }
-            else{
-                setTimeout(startLocationServices, 2000)
-            }
-        }, function(err){
-            alert(err.message);
-            getSearchResults();
-        }, {enableHighAccuracy:true});
+        navigator.geolocation.getCurrentPosition(getLocationCallback, highAccuracyTimeoutCallback, {enableHighAccuracy:true, timeout: 5000});
+    }
+    else{
+        getSearchResults();
     }
 }
 
+function getLocationCallback(position){
+    lng = position.coords.longitude;
+    lat = position.coords.latitude;
+    if(map){
+        var center = new google.maps.LatLng(lat, lng);
+        map.setCenter(center);
+        curLocation.setPosition(center);
+        getSearchResults();
+    }
+    else{
+        setTimeout(startLocationServices, 2000);
+    }
+}
+
+function highAccuracyTimeoutCallback(err){
+    navigator.geolocation.getCurrentPosition(getLocationCallback,lowAccuracyTimeoutCallback, {enableHighAccuracy: false, timeout: 10000});
+}
+
+function lowAccuracyTimeoutCallback(err){
+    alert("Failed to get location. Please enter it on the settings page.");
+    toggleSettingsPanel();
+}
 startLocationServices();
 
 function refreshListsURL(){
