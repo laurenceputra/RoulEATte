@@ -23,7 +23,6 @@
 <div id="settings-icon">
 	<a href="#" onclick="toggleSettingsPanel()"><img src="/img/settings.png"></a>
 </div>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script type="text/javascript">
 	document.getElementById('distance-show-value').innerHTML = document.getElementById('distance-value').value;
 	document.getElementById('num-result-show-value').innerHTML = document.getElementById('num-result-value').value;
