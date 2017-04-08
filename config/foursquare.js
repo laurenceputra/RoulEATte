@@ -67,7 +67,9 @@ module.exports = function(){
         if(location.venue.location.formattedAddress){
             storedLocation.address = location.venue.location.formattedAddress.join(' ');
         }
-        storedLocation.category = location.venue.categories[0].name;
+        if (location.venue.categories[0]) {
+            storedLocation.category = location.venue.categories[0].name;
+        }
         return storedLocation;
     }
 
