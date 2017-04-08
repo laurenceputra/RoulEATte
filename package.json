@@ -34,7 +34,6 @@
         "localizr": "^0.1.0",
         "mocha": "^1.18.0",
         "mongoose": "~3.8.20",
-        "newrelic": "^1.14.7",
         "passwordless": "^1.0.8",
         "passwordless-mongostore": "^0.1.0",
         "request": "^2.49.0",
