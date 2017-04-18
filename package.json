@@ -13,6 +13,7 @@
     "dependencies": {
         "adaro": "^0.1.7",
         "connect-mongo": "~0.4.1",
+        "dotenv": "^4.0.0",
         "dustjs-helpers": "~1.2.0",
         "dustjs-linkedin": "~2.3.6",
         "engine-munger": "~0.2.0",
